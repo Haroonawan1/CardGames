@@ -17,7 +17,6 @@ public class MainFrame extends JFrame implements Runnable {
         this.setResizable(false);
         this.setVisible(true);
         startThread();
-
     }
 
     public void startThread() {

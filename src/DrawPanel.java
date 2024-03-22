@@ -10,12 +10,16 @@ import java.awt.Font;
 class DrawPanel extends JPanel implements MouseListener {
 
     private ArrayList<Card> hand;
-    private Rectangle button;
+    private Deck deck;
+    private Rectangle playAgain;
+    private Rectangle replaceCards;
 
     public DrawPanel() {
-        button = new Rectangle(147, 300, 160, 26);
+        deck = new Deck();
+        playAgain = new Rectangle(152, 305, 125, 26);
+        replaceCards = new Rectangle(133, 340, 160, 26);
         this.addMouseListener(this);
-        hand = Card.buildHand();
+        hand = deck.buildHand();
     }
 
     protected void paintComponent(Graphics g) {
@@ -37,8 +41,11 @@ class DrawPanel extends JPanel implements MouseListener {
             x = x + c.getImage().getWidth() + 10;
         }
         g.setFont(new Font("Courier New", Font.BOLD, 20));
-        g.drawString("GET NEW CARDS", 165, 320);
-        g.drawRect((int)button.getX() + 15, (int)button.getY(), (int)button.getWidth(), (int)button.getHeight());
+        g.drawString("PLAY AGAIN", 180, 325);
+        g.drawString("Replace Cards", 160, 360);
+        g.drawString("Remaining Cards: " + deck.getRemainingCards(), 130, 388);
+        g.drawRect((int)playAgain.getX() + 25, (int)playAgain.getY(), (int)playAgain.getWidth(), (int)playAgain.getHeight());
+        g.drawRect((int)replaceCards.getX() + 25, (int)replaceCards.getY(), (int)replaceCards.getWidth(), (int)replaceCards.getHeight());
     }
 
     public void mousePressed(MouseEvent e) {
@@ -46,8 +53,13 @@ class DrawPanel extends JPanel implements MouseListener {
         Point clicked = e.getPoint();
 
         if (e.getButton() == 1) {
-            if (button.contains(clicked)) {
-                hand = Card.buildHand();
+            if (playAgain.contains(clicked)) {
+                deck.setRemainingCards(52);
+                hand = deck.buildHand();
+            }
+
+            if (replaceCards.contains(clicked)) {
+
             }
 
             for (int i = 0; i < hand.size(); i++) {
@@ -62,7 +74,12 @@ class DrawPanel extends JPanel implements MouseListener {
             for (int i = 0; i < hand.size(); i++) {
                 Rectangle box = hand.get(i).getCardBox();
                 if (box.contains(clicked)) {
-                    hand.get(i).flipHighlight();
+                    if (hand.get(i).getHighlight()) {
+                        hand.set(i, deck.replaceCard());
+                    }
+                    else {
+                        hand.get(i).flipHighlight();
+                    }
                 }
             }
         }

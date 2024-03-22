@@ -2,7 +2,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.awt.Rectangle;
 
 public class Card {
@@ -82,35 +81,5 @@ public class Card {
             System.out.println(e);
             return null;
         }
-    }
-
-    public static ArrayList<Card> buildDeck() {
-        ArrayList<Card> deck = new ArrayList<Card>();
-        String[] suits = {"clubs", "diamonds", "hearts", "spades"};
-        String[] values = {"02", "03", "04", "05", "06", "07", "08", "09", "10", "A", "J", "K", "Q"};
-        for (String s : suits) {
-            for (String v : values) {
-                Card c = new Card(s, v);
-                deck.add(c);
-            }
-        }
-        return deck;
-    }
-
-    public static ArrayList<Card> buildHand() {
-        ArrayList<Card> deck = Card.buildDeck();
-        ArrayList<Card> hand = new ArrayList<Card>();
-        for (int i = 0; i < 9; i++) {
-            int r = (int)(Math.random()*deck.size());
-            Card c = deck.remove(r);
-            hand.add(c);
-        }
-        return hand;
-    }
-
-    public static Card randomCard() {
-        ArrayList<Card> deck = Card.buildDeck();
-        int r = (int)(Math.random()*deck.size());
-        return deck.get(r);
     }
 }
