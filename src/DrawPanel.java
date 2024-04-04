@@ -40,17 +40,19 @@ public class DrawPanel extends JPanel implements MouseListener {
 
             x = x + c.getImage().getWidth() + 10;
         }
+
         g.setFont(new Font("Courier New", Font.BOLD, 20));
         g.drawString("PLAY AGAIN", 180, 325);
         g.drawString("Replace Cards", 160, 360);
         g.drawString("Remaining Cards: " + deck.getRemainingCards(), 130, 388);
+
+        int[] positions = {501, 501, 501, 501};
+        deck.checkEnd(hand, positions);
+        g.drawString("YOU WIN", positions[0], positions[1]);
+        g.drawString("No more valid moves!", positions[2], positions[3]);
+
         g.drawRect((int)playAgain.getX() + 25, (int)playAgain.getY(), (int)playAgain.getWidth(), (int)playAgain.getHeight());
         g.drawRect((int)replaceCards.getX() + 25, (int)replaceCards.getY(), (int)replaceCards.getWidth(), (int)replaceCards.getHeight());
-        switch (deck.checkEnd(hand)) {
-            case 1 -> g.drawString("YOU WIN", 180, 415);
-            case 2 -> g.drawString("No more valid moves!", 120, 415);
-            case 3 -> g.drawString("", 0, 0);
-        }
     }
 
     public void mousePressed(MouseEvent e) {

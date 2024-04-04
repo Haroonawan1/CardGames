@@ -43,26 +43,32 @@ public class Deck {
         return -1;
     }
 
-    public int checkEnd(ArrayList<Card> hand) {
+    public void checkEnd(ArrayList<Card> hand, int[] positions) {
         if (remainingCards == 0 && hand.isEmpty()) {
-            return 1;
+            positions[0] = 180;
+            positions[1] = 415;
         }
 
         boolean comboAvailable = false;
         for (int i = 0; i < hand.size(); i++) {
             for (int j = 0; j < hand.size(); j++) {
-                int num = Integer.parseInt(hand.get(i).getValue() + hand.get(j).getValue());
+                int num = Integer.parseInt(hand.get(i).getValue()) + Integer.parseInt(hand.get(j).getValue());
                 if (i != j && num == 11) {
                     comboAvailable = true;
+                }
+                for (int k = 0; k < hand.size(); k++) {
+                    int num2 = num + Integer.parseInt(hand.get(k).getValue());
+                    if (i != j && i != k && j != k && num2 == 36) {
+                        comboAvailable = true;
+                    }
                 }
             }
         }
 
         if (!comboAvailable){
-            return 2;
+            positions[2] = 120;
+            positions[3] = 415;
         }
-
-        return 3;
     }
 
     public boolean check11(ArrayList<Card> hand) {
@@ -72,7 +78,6 @@ public class Deck {
                 highlightedCards.add(card);
             }
         }
-        System.out.println(highlightedCards);
 
         boolean result;
         switch (highlightedCards.size()) {
