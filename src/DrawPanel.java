@@ -7,7 +7,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.awt.Font;
 
-class DrawPanel extends JPanel implements MouseListener {
+public class DrawPanel extends JPanel implements MouseListener {
 
     private ArrayList<Card> hand;
     private Deck deck;
@@ -46,6 +46,11 @@ class DrawPanel extends JPanel implements MouseListener {
         g.drawString("Remaining Cards: " + deck.getRemainingCards(), 130, 388);
         g.drawRect((int)playAgain.getX() + 25, (int)playAgain.getY(), (int)playAgain.getWidth(), (int)playAgain.getHeight());
         g.drawRect((int)replaceCards.getX() + 25, (int)replaceCards.getY(), (int)replaceCards.getWidth(), (int)replaceCards.getHeight());
+        switch (deck.checkEnd(hand)) {
+            case 1 -> g.drawString("YOU WIN", 180, 415);
+            case 2 -> g.drawString("No more valid moves!", 120, 415);
+            case 3 -> g.drawString("", 0, 0);
+        }
     }
 
     public void mousePressed(MouseEvent e) {
@@ -59,13 +64,13 @@ class DrawPanel extends JPanel implements MouseListener {
             }
 
             if (replaceCards.contains(clicked)) {
-
+                deck.check11(hand);
             }
 
-            for (int i = 0; i < hand.size(); i++) {
-                Rectangle box = hand.get(i).getCardBox();
+            for (Card card : hand) {
+                Rectangle box = card.getCardBox();
                 if (box.contains(clicked)) {
-                    hand.get(i).flipCard();
+                    card.flipCard();
                 }
             }
         }
@@ -74,12 +79,12 @@ class DrawPanel extends JPanel implements MouseListener {
             for (int i = 0; i < hand.size(); i++) {
                 Rectangle box = hand.get(i).getCardBox();
                 if (box.contains(clicked)) {
-                    if (hand.get(i).getHighlight()) {
-                        hand.set(i, deck.replaceCard());
-                    }
-                    else {
+                    //if (hand.get(i).getHighlight()) {
+                        //hand.set(i, deck.replaceCard());
+                    //}
+                    //else {
                         hand.get(i).flipHighlight();
-                    }
+                    //}
                 }
             }
         }
